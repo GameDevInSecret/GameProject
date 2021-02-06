@@ -1,3 +1,6 @@
-# GameProject
+# Title in Progress
 
-Something Something Something
+Game project
+
+##Technologies:
+- [Unity Real-Time Development Platform](https://unity.com/)

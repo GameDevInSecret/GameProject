@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3675948955171397360}
   - component: {fileID: 3675948955171397361}
   - component: {fileID: 3675948955171397366}
+  - component: {fileID: 1779618034260880428}
   m_Layer: 0
   m_Name: shield
   m_TagString: Untagged
@@ -130,3 +131,17 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &1779618034260880428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3675948955171397367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 547470cad68658b4595cfea9136cad5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  forceDir: {x: 1, y: 0, z: 0}
+  sparks: {fileID: 0}

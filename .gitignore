@@ -59,4 +59,4 @@ sysinfo.txt
 crashlytics-build.properties
 
 # Manual ignores (by devpin)
-./idea/
+.idea/

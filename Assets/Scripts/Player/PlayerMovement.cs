@@ -25,19 +25,14 @@ namespace Player
             Physics2D.gravity *= gravityMultiplier;
         }
 
-        private void Update()
-        {
-            UpdateMovement();
-        }
-
         private void FixedUpdate()
         {
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down);
-
-            if (hit.collider != null && !_grounded)
-            {
-                _grounded = true;
-            }
+            // RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down);
+            //
+            // if (hit.collider. != null && !_grounded)
+            // {
+            //     _grounded = true;
+            // }
         }
 
         public void OnJump()
@@ -52,15 +47,15 @@ namespace Player
             UpdateMomentumVector(context.ReadValue<Vector2>());
         }
 
-        // public void OnCollisionEnter2D(Collision2D other)
-        // {
-        //     if (other.gameObject.CompareTag("Ground"))
-        //     {
-        //         _grounded = true;
-        //     }
-        // }
+        public void OnCollisionEnter2D(Collision2D other)
+        {
+            if (other.gameObject.CompareTag("Ground"))
+            {
+                _grounded = true;
+            }
+        }
 
-        private void UpdateMovement()
+        public void UpdateMovement()
         {
             if (_rigidbody2D.velocity.magnitude < maxVelocity)
             {

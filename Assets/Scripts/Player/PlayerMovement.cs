@@ -10,7 +10,7 @@ namespace Player
         
         private Vector2 _momentumVector = Vector2.zero;
 
-        private bool _grounded = true;
+        // private bool _grounded = true;
         
         public float gravityMultiplier = 2f;
         public float jumpForce = 150f;
@@ -18,10 +18,18 @@ namespace Player
         public float maxVelocity = 10f;
 
         public float floatHeight;
+        
+        private PlayerController _controller;
 
         private void Start()
         {
             _rigidbody2D = GetComponent<Rigidbody2D>();
+            _controller = GetComponent<PlayerController>();
+            
+            // Set the default states for movement
+            _controller.SetStateIsGrounded(true);
+            _controller.SetStateLookingRight(true);
+            
             Physics2D.gravity *= gravityMultiplier;
         }
 
@@ -37,21 +45,24 @@ namespace Player
 
         public void OnJump()
         {
-            if (!_grounded) return;
+            // if (!_controller.GetStateIsGrounded()) return;
             HandleJump();
-            _grounded = false;
+            _controller.SetStateIsGrounded(false);
         }
 
-        public void OnMove(InputAction.CallbackContext context)
+        public void OnMove(Vector2 input)
         {
-            UpdateMomentumVector(context.ReadValue<Vector2>());
+            UpdateMomentumVector(input);
         }
 
         public void OnCollisionEnter2D(Collision2D other)
         {
             if (other.gameObject.CompareTag("Ground"))
             {
-                _grounded = true;
+                _controller.SetStateIsGrounded(true);
+            } else if (other.gameObject.CompareTag("Shield"))
+            {
+                
             }
         }
 

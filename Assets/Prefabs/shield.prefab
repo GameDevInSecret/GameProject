@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3675948955171397361}
   - component: {fileID: 3675948955171397366}
   - component: {fileID: 1779618034260880428}
+  - component: {fileID: 2430950548349681625}
   m_Layer: 0
   m_Name: shield
   m_TagString: Shield
@@ -145,3 +146,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forceDir: {x: 1, y: 0, z: 0}
   sparks: {fileID: 0}
+--- !u!114 &2430950548349681625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3675948955171397367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4503667ff6b329e42a9f69626e054caf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 10
+  OnDamageableEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnNonDamageableEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  hittableLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295

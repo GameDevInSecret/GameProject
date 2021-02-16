@@ -23,6 +23,8 @@ namespace Player
         private SpriteRenderer _spriteRenderer;
         private Sprite _currentLeftFacingSprite;
         private Sprite _currentRightFacingSprite;
+
+        private Damageable _dm;
         
         // Start is called before the first frame update
         private void Start()
@@ -117,6 +119,26 @@ namespace Player
                 SetStateHasShield(true);
                 Destroy(other.gameObject);
             }
+        }
+
+        public void OnHealthSet(Damageable dm)
+        {
+            print("HEALTH SET TO " + dm.CurrentHealth);
+        }
+
+        public void OnTakeDamage(Damager damager, Damageable damageable)
+        {
+            print("PLAYER HIT FOR " + damager.damage + " DAMAGE!");
+        }
+
+        public void OnDie(Damager damager, Damageable damageable)
+        {
+            print("You done died, muh boi");
+        }
+
+        public void OnGainHealth(int val, Damageable damageable)
+        {
+            print("Gained " + val + " health");
         }
     }
     

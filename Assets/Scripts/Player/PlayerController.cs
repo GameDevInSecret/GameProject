@@ -25,6 +25,7 @@ namespace Player
         private Sprite _currentRightFacingSprite;
 
         private Damageable _dm;
+        private Rigidbody2D _playerRb;
         
         // Start is called before the first frame update
         private void Start()
@@ -32,6 +33,7 @@ namespace Player
             _playerMovement = GetComponent<PlayerMovement>();
             _playerThrowShield = GetComponent<PlayerThrowShield>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
+            _playerRb = GetComponent<Rigidbody2D>();
 
             _currentRightFacingSprite = spriteGuyWithShieldFacingRight;
             _currentLeftFacingSprite = spriteGuyWithShieldFacingLeft;
@@ -130,7 +132,7 @@ namespace Player
         {
             print("PLAYER HIT FOR " + damager.damage + " DAMAGE!");
             Vector2 damageDir = (transform.position - damager.transform.position + (UnityEngine.Vector3)damager.offset).normalized;
-            GetComponent<Rigidbody2D>().AddForce(damageDir * 2F, ForceMode2D.Impulse);
+            _playerRb.AddForce(damageDir * 2F, ForceMode2D.Impulse);
         }
 
         public void OnDie(Damager damager, Damageable damageable)

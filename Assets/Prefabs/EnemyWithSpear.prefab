@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2058853666176398442}
   - component: {fileID: 4937606557088347302}
   - component: {fileID: 2184735412803149406}
+  - component: {fileID: 3972935870045659190}
   m_Layer: 0
   m_Name: EnemyWithSpear
   m_TagString: Untagged
@@ -157,6 +158,59 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a33fc2d8c8f78874789f3c92a4e10768, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3972935870045659190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5205605759791943605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4503667ff6b329e42a9f69626e054caf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 10
+  canDamage: 0
+  ignoreInvincibility: 0
+  hittableLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  movable: 0
+  offset: {x: 0.65, y: -0.192}
+  size: {x: 0.8, y: 0.8}
+  OnDamageableEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4937606557088347302}
+        m_MethodName: OnDamageableEvent
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnNonDamageableEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4937606557088347302}
+        m_MethodName: OnNonDamageableEvent
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  debugPointPrefab: {fileID: 9173607954042685336, guid: 6cefa1844677a3e42802a6fc90a88f67,
+    type: 3}
+  pointA: {x: 0, y: 0}
+  pointB: {x: 0, y: 0}
 --- !u!1001 &344046335557382394
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -228,6 +282,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Spear
+      objectReference: {fileID: 0}
+    - target: {fileID: 7024710559201799485, guid: 5c577aa590770bd4aad55b08492d6169,
+        type: 3}
+      propertyPath: m_Simulated
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5c577aa590770bd4aad55b08492d6169, type: 3}

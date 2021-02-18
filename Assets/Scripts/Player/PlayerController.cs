@@ -129,6 +129,8 @@ namespace Player
         public void OnTakeDamage(Damager damager, Damageable damageable)
         {
             print("PLAYER HIT FOR " + damager.damage + " DAMAGE!");
+            Vector2 damageDir = (transform.position - damager.transform.position + (UnityEngine.Vector3)damager.offset).normalized;
+            GetComponent<Rigidbody2D>().AddForce(damageDir * 2F, ForceMode2D.Impulse);
         }
 
         public void OnDie(Damager damager, Damageable damageable)
@@ -140,6 +142,9 @@ namespace Player
         {
             print("Gained " + val + " health");
         }
+        
+        public void OnDamageableEvent( Damager damager, Damageable damageable) {print("HITTING SOMETHING!");}
+        public void OnNonDamageableEvent(Damager damager) {print("HITTING SOMETHING THAT ISN'T DAMAGEABLE");}
     }
     
     struct States

@@ -15,4 +15,11 @@ public class EnemyController : MonoBehaviour
     {
         
     }
+    
+    public void OnTakeDamage(Damager damager, Damageable damageable) {print("ENEMY HIT FOR " + damager.damage + " DAMAGE!");}
+    public void OnDie(Damager damager, Damageable damageable) {print("Enemy die");}
+    public void OnGainHealth(int val, Damageable damageable) {print("Enemy gained " + val + " health");}
+    
+    public void OnDamageableEvent( Damager damager, Damageable damageable) {print("ENEMY HITTING SOMETHING!");}
+    public void OnNonDamageableEvent(Damager damager) {print("ENEMY HITTING SOMETHING THAT ISN'T DAMAGEABLE");}
 }

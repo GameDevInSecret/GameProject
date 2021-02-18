@@ -25,6 +25,7 @@ namespace Player
         private Sprite _currentRightFacingSprite;
 
         private Damageable _dm;
+        private Rigidbody2D _playerRb;
         
         // Start is called before the first frame update
         private void Start()
@@ -32,6 +33,7 @@ namespace Player
             _playerMovement = GetComponent<PlayerMovement>();
             _playerThrowShield = GetComponent<PlayerThrowShield>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
+            _playerRb = GetComponent<Rigidbody2D>();
 
             _currentRightFacingSprite = spriteGuyWithShieldFacingRight;
             _currentLeftFacingSprite = spriteGuyWithShieldFacingLeft;
@@ -129,6 +131,8 @@ namespace Player
         public void OnTakeDamage(Damager damager, Damageable damageable)
         {
             print("PLAYER HIT FOR " + damager.damage + " DAMAGE!");
+            Vector2 damageDir = (transform.position - damager.transform.position + (UnityEngine.Vector3)damager.offset).normalized;
+            _playerRb.AddForce(damageDir * 2F, ForceMode2D.Impulse);
         }
 
         public void OnDie(Damager damager, Damageable damageable)
@@ -140,6 +144,9 @@ namespace Player
         {
             print("Gained " + val + " health");
         }
+        
+        public void OnDamageableEvent( Damager damager, Damageable damageable) {print("HITTING SOMETHING!");}
+        public void OnNonDamageableEvent(Damager damager) {print("HITTING SOMETHING THAT ISN'T DAMAGEABLE");}
     }
     
     struct States

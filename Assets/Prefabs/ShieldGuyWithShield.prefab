@@ -406,6 +406,7 @@ MonoBehaviour:
     type: 3}
   spriteGuyWithoutShieldFacingLeft: {fileID: 21300000, guid: 855b694ce11b4d54598864636f5cdfd9,
     type: 3}
+  healthEvent: {fileID: 11400000, guid: 693079bef9e1fa34680c0bb0f161338c, type: 2}
 --- !u!114 &215217005
 MonoBehaviour:
   m_ObjectHideFlags: 0

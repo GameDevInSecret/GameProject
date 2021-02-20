@@ -81,7 +81,7 @@ namespace Player
 
         public void IG_Player_OnJump(InputAction.CallbackContext context)
         {
-            if (_states.isGrounded)
+            if (_states.isGrounded && context.started)
             {
                 _playerMovement.OnJump();
             }

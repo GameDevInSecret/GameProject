@@ -13,6 +13,9 @@ namespace Player
         public Sprite spriteGuyWithShieldFacingLeft;
         public Sprite spriteGuyWithoutShieldFacingRight;
         public Sprite spriteGuyWithoutShieldFacingLeft;
+
+        [SerializeField] private PlayerHealthEvent healthEvent;
+        public PlayerAttributes attributes;
         
         // Scripts
         private PlayerMovement _playerMovement;
@@ -24,7 +27,7 @@ namespace Player
         private Sprite _currentLeftFacingSprite;
         private Sprite _currentRightFacingSprite;
 
-        private Damageable _dm;
+        private Damageable _damageable;
         private Rigidbody2D _playerRb;
         
         // Start is called before the first frame update
@@ -34,6 +37,11 @@ namespace Player
             _playerThrowShield = GetComponent<PlayerThrowShield>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _playerRb = GetComponent<Rigidbody2D>();
+            
+            attributes.healthEvent = healthEvent;
+            
+            _damageable = GetComponent<Damageable>();
+            _damageable.SetHealth(attributes.initialHealth);
 
             _currentRightFacingSprite = spriteGuyWithShieldFacingRight;
             _currentLeftFacingSprite = spriteGuyWithShieldFacingLeft;
@@ -133,6 +141,7 @@ namespace Player
             print("PLAYER HIT FOR " + damager.damage + " DAMAGE!");
             Vector2 damageDir = (transform.position - damager.transform.position + (UnityEngine.Vector3)damager.offset).normalized;
             _playerRb.AddForce(damageDir * 2F, ForceMode2D.Impulse);
+            attributes.LowerHealth(damager.damage);
         }
 
         public void OnDie(Damager damager, Damageable damageable)

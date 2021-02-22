@@ -20,7 +20,7 @@ public class Damager : MonoBehaviour
     { }
     
     [Header("Properties")]
-    public float damage = 10;
+    public int damage = 10;
     public bool canDamage;
     public bool ignoreInvincibility = false;
     public LayerMask hittableLayers;

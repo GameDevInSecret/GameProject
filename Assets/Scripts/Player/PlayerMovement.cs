@@ -9,61 +9,27 @@ namespace Player
         private Rigidbody2D _rigidbody2D;
         
         private Vector2 _momentumVector = Vector2.zero;
-
-        // private bool _grounded = true;
         
         public float gravityMultiplier = 2f;
         public float jumpForce = 150f;
         public float thrust = 100f;
         public float maxVelocity = 10f;
 
-        public float floatHeight;
-        
-        private PlayerController _controller;
-
         private void Start()
         {
             _rigidbody2D = GetComponent<Rigidbody2D>();
-            _controller = GetComponent<PlayerController>();
-            
-            // Set the default states for movement
-            _controller.SetStateIsGrounded(true);
-            _controller.SetStateLookingRight(true);
-            
-            Physics2D.gravity *= gravityMultiplier;
-        }
 
-        private void FixedUpdate()
-        {
-            // RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down);
-            //
-            // if (hit.collider. != null && !_grounded)
-            // {
-            //     _grounded = true;
-            // }
+            Physics2D.gravity *= gravityMultiplier;
         }
 
         public void OnJump()
         {
-            // if (!_controller.GetStateIsGrounded()) return;
-            HandleJump();
-            _controller.SetStateIsGrounded(false);
+            _rigidbody2D.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         }
 
         public void OnMove(Vector2 input)
         {
             UpdateMomentumVector(input);
-        }
-
-        public void OnCollisionEnter2D(Collision2D other)
-        {
-            if (other.gameObject.CompareTag("Ground"))
-            {
-                _controller.SetStateIsGrounded(true);
-            } else if (other.gameObject.CompareTag("Shield"))
-            {
-                
-            }
         }
 
         public void UpdateMovement()
@@ -72,11 +38,6 @@ namespace Player
             {
                 _rigidbody2D.AddForce(_momentumVector * thrust, ForceMode2D.Force);
             }
-        }
-
-        private void HandleJump()
-        {
-            _rigidbody2D.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         }
 
         private void UpdateMomentumVector(Vector2 input)

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4937606557088347302}
   - component: {fileID: 2184735412803149406}
   - component: {fileID: 3972935870045659190}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: EnemyWithSpear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -171,14 +171,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 10
-  canDamage: 0
+  canDamage: 1
   ignoreInvincibility: 0
   hittableLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   movable: 0
   offset: {x: 0.65, y: -0.192}
-  size: {x: 0.8, y: 0.8}
+  size: {x: 0.3, y: 0.3}
+  backoffTime: 0.25
+  indefiniteBackoff: 1
+  active: 1
   OnDamageableEvent:
     m_PersistentCalls:
       m_Calls:
@@ -282,6 +285,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Spear
+      objectReference: {fileID: 0}
+    - target: {fileID: 4247392507939350701, guid: 5c577aa590770bd4aad55b08492d6169,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7024710559201799485, guid: 5c577aa590770bd4aad55b08492d6169,
         type: 3}

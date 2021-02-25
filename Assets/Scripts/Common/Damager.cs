@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -31,6 +32,11 @@ public class Damager : MonoBehaviour
     [Tooltip("When movable is false, this offset will be a fixed offset relative to the center of the object.")]
     public Vector2 offset;
     public Vector2 size;
+    [Tooltip("After colliding with a damageable, the time before the damager becomes active again")]
+    public float backoffTime = 0.25F;
+    [Tooltip("If set true, the damager will remain inactive until manually set to active.")]
+    public bool indefiniteBackoff = false;
+    public bool active = true;
     
     [Header("Events")]
     public DamageableEvent OnDamageableEvent;
@@ -84,25 +90,41 @@ public class Damager : MonoBehaviour
         // print("A: " + pointA + " B: " + pointB);
 
         int hitCount = Physics2D.OverlapArea(pointA, pointB, m_AttackContactFilter, m_AttackOverlapResults);
+
         // print(hitCount);
         
         for ( int i = 0; i < hitCount; ++i )
         {
             Damageable damageable = m_AttackOverlapResults[i].GetComponent<Damageable>();
 
-            if (damageable)
+            if (damageable && active)
             {
                 // OnDamageableEvent.Invoke(this, damageable);
                 damageable.OnTakeDamage.Invoke(this, damageable);
+                active = false;
+                if (!indefiniteBackoff)
+                {
+                    StartCoroutine(BackoffCallback());
+                }
             }
             else
             {
                 // OnNonDamageableEvent.Invoke(this);
             }
         }
-
     }
-    
+
+    private void OnDestroy()
+    {
+        Destroy(pointADebug);
+        Destroy(pointBDebug);
+    }
+
+    IEnumerator BackoffCallback()
+    {
+        yield return new WaitForSeconds(backoffTime);
+        active = true;
+    }
 
     public bool DamagerActive() { return canDamage; }
     public void EnableDamager() { canDamage = true; }

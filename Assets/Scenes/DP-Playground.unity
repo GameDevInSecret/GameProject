@@ -396,35 +396,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3972935870045659190, guid: 7ace052469440a149acaa250731a8b11,
-        type: 3}
-      propertyPath: size.x
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 3972935870045659190, guid: 7ace052469440a149acaa250731a8b11,
-        type: 3}
-      propertyPath: size.y
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 3972935870045659190, guid: 7ace052469440a149acaa250731a8b11,
-        type: 3}
-      propertyPath: canDamage
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3972935870045659190, guid: 7ace052469440a149acaa250731a8b11,
-        type: 3}
-      propertyPath: hittableLayers.m_Bits
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5205605759791943605, guid: 7ace052469440a149acaa250731a8b11,
         type: 3}
       propertyPath: m_Name
       value: EnemyWithSpear
-      objectReference: {fileID: 0}
-    - target: {fileID: 7330317961770868167, guid: 7ace052469440a149acaa250731a8b11,
-        type: 3}
-      propertyPath: m_Simulated
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7ace052469440a149acaa250731a8b11, type: 3}
@@ -558,43 +533,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1052744093 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6635988591190806110, guid: 62fa9b42add40654395ee9852229b285,
-    type: 3}
-  m_PrefabInstance: {fileID: 1453422769}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1052744094
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1052744093}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4503667ff6b329e42a9f69626e054caf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 10
-  canDamage: 1
-  ignoreInvincibility: 0
-  hittableLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  movable: 0
-  offset: {x: 0, y: 0}
-  size: {x: 0.8, y: 0.8}
-  OnDamageableEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  OnNonDamageableEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  debugPointPrefab: {fileID: 9173607954042685336, guid: 6cefa1844677a3e42802a6fc90a88f67,
-    type: 3}
-  pointA: {x: 0, y: 0}
-  pointB: {x: 0, y: 0}
 --- !u!1 &1091087132
 GameObject:
   m_ObjectHideFlags: 0
@@ -809,11 +747,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 215217004, guid: 37e5e55cf1f3ed44fb6e7635826eba4e, type: 3}
-      propertyPath: attributes
-      value: 
-      objectReference: {fileID: 11400000, guid: a75b5de481b3f974da1ec60b608542bc,
-        type: 2}
     - target: {fileID: 1330292069433469250, guid: 37e5e55cf1f3ed44fb6e7635826eba4e,
         type: 3}
       propertyPath: m_Name
@@ -942,16 +875,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Vertical Floating Spikey Ball
-      objectReference: {fileID: 0}
-    - target: {fileID: 6942079894656986418, guid: 62fa9b42add40654395ee9852229b285,
-        type: 3}
-      propertyPath: speed
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6942079894656986418, guid: 62fa9b42add40654395ee9852229b285,
-        type: 3}
-      propertyPath: patrolDistance
-      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 62fa9b42add40654395ee9852229b285, type: 3}
@@ -1092,14 +1015,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 246097038, guid: 5bbd17b053aff0846bb0d2e00831ac12, type: 3}
-      propertyPath: canDamage
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 246097038, guid: 5bbd17b053aff0846bb0d2e00831ac12, type: 3}
-      propertyPath: hittableLayers.m_Bits
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6574578955815481556, guid: 5bbd17b053aff0846bb0d2e00831ac12,
         type: 3}
       propertyPath: m_Name

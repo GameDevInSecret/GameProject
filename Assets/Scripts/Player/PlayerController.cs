@@ -3,6 +3,7 @@ using System.Numerics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 namespace Player
 {
@@ -29,6 +30,8 @@ namespace Player
 
         private Damageable _damageable;
         private Rigidbody2D _playerRb;
+
+        private Camera _camera;
         
         // Start is called before the first frame update
         private void Start()
@@ -37,6 +40,8 @@ namespace Player
             _playerThrowShield = GetComponent<PlayerThrowShield>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _playerRb = GetComponent<Rigidbody2D>();
+
+            _camera = Camera.main;
             
             attributes.healthEvent = healthEvent;
             
@@ -48,18 +53,27 @@ namespace Player
             
             SetStateHasShield(true);
         }
-
-        // Update is called once per frame
-        private void Update()
+        
+        private void FixedUpdate()
         {
             _playerMovement.UpdateMovement();
+
         }
 
         public void IG_Shield_OnAim(InputAction.CallbackContext context)
         {
             if (_states.hasShield)
             {
-                _playerThrowShield.ThrowingShield_OnAim(context.ReadValue<Vector2>());
+                // if using mouse input
+                if (context.control.name.Equals("position"))
+                {
+                    _playerThrowShield.ThrowingShield_OnAim(
+                        _camera.ScreenToWorldPoint(Mouse.current.position.ReadValue()));
+                }
+                else
+                {
+                    _playerThrowShield.ThrowingShield_OnAim(context.ReadValue<Vector2>());
+                }
             }
         }
 
@@ -92,6 +106,7 @@ namespace Player
             if (_states.isGrounded && context.started)
             {
                 _playerMovement.OnJump();
+                SetStateIsGrounded(false);
             }
         }
         
@@ -128,6 +143,10 @@ namespace Player
             {
                 SetStateHasShield(true);
                 Destroy(other.gameObject);
+            }
+            else if (other.gameObject.CompareTag("Ground"))
+            {
+                SetStateIsGrounded(true);
             }
         }
 

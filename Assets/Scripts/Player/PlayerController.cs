@@ -1,6 +1,4 @@
-﻿using System;
-using System.Numerics;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
@@ -20,10 +18,9 @@ namespace Player
         
         // Scripts
         private PlayerMovement _playerMovement;
-        private PlayerThrowShield _playerThrowShield;
-        
+
         // Private variables
-        private States _states = new States();
+        private StateController _state;
         private SpriteRenderer _spriteRenderer;
         private Sprite _currentLeftFacingSprite;
         private Sprite _currentRightFacingSprite;
@@ -31,17 +28,21 @@ namespace Player
         private Damageable _damageable;
         private Rigidbody2D _playerRb;
 
+        // Aim tools
         private Camera _camera;
+        private AimAssist _aimAssist;
+
+        public GameObject shield;
         
         // Start is called before the first frame update
         private void Start()
         {
             _playerMovement = GetComponent<PlayerMovement>();
-            _playerThrowShield = GetComponent<PlayerThrowShield>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _playerRb = GetComponent<Rigidbody2D>();
 
             _camera = Camera.main;
+            _aimAssist = GetComponentInChildren<AimAssist>();
             
             attributes.healthEvent = healthEvent;
             
@@ -50,103 +51,116 @@ namespace Player
 
             _currentRightFacingSprite = spriteGuyWithShieldFacingRight;
             _currentLeftFacingSprite = spriteGuyWithShieldFacingLeft;
+
+            _state = new StateController();
             
-            SetStateHasShield(true);
         }
         
         private void FixedUpdate()
         {
             _playerMovement.UpdateMovement();
 
-        }
+            _aimAssist.gameObject.SetActive(_state.IsAiming);
+            
+            UpdateSprite();
 
-        public void IG_Shield_OnAim(InputAction.CallbackContext context)
-        {
-            if (_states.hasShield)
-            {
-                // if using mouse input
-                if (context.control.name.Equals("position"))
-                {
-                    _playerThrowShield.ThrowingShield_OnAim(
-                        _camera.ScreenToWorldPoint(Mouse.current.position.ReadValue()));
-                }
-                else
-                {
-                    _playerThrowShield.ThrowingShield_OnAim(context.ReadValue<Vector2>());
-                }
-            }
         }
-
-        public void IG_Player_OnMove(InputAction.CallbackContext context)
+        
+        public void OnMove(InputAction.CallbackContext context)
         {
-            Vector2 input = context.ReadValue<Vector2>();
-            if (input.x < 0)
-            {
-                // We are moving left
-                _spriteRenderer.sprite = _currentLeftFacingSprite;
-            }
-            else if (input.x > 0)
-            {
-                // We are moving right
-                _spriteRenderer.sprite = _currentRightFacingSprite;
-            }
+            // update look state for sprite rendering
+            var input = context.ReadValue<Vector2>();
+            if (input.x > 0)
+                _state.IsLookingRight = true;
+            else if (input.x < 0)
+                _state.IsLookingRight = false;
+            
             _playerMovement.OnMove(input);
         }
 
-        public void IG_Shield_OnFire(InputAction.CallbackContext context)
+        public void OnJump(InputAction.CallbackContext context)
         {
-            if (_states.hasShield && _states.isAiming && context.started)
-            {
-                _playerThrowShield.ThrowingShield_OnFire();
-            }
-        }
-
-        public void IG_Player_OnJump(InputAction.CallbackContext context)
-        {
-            if (_states.isGrounded && context.started)
+            // context.started check to prevent second jump on button release
+            if (_state.IsGrounded && context.started)
             {
                 _playerMovement.OnJump();
-                SetStateIsGrounded(false);
+                _state.IsGrounded = false;
             }
         }
-        
-        public void SetStateIsAiming( bool s ) { _states.isAiming = s; }
-        public bool GetStateIsAiming() { return _states.isAiming; }
 
-        public void SetStateHasShield(bool s)
+        public void OnAim(InputAction.CallbackContext context)
         {
-            _states.hasShield = s;
-            if (!s)
+            //TODO: add deadzone to right stick to prevent snapping opposite dir on quick release
+            //TODO: add timer/check for mouse input no-change to disable arrow on no aim with mouse
+            //TODO: update sprite based on look?
+            
+            if (_state.HasShield)
             {
-                _currentLeftFacingSprite = spriteGuyWithoutShieldFacingLeft;
-                _currentRightFacingSprite = spriteGuyWithoutShieldFacingRight;
+                _state.IsAiming = true;
+                _aimAssist.OnAim(context);
                 
+                // update look state for sprite rendering
+                // var input = context.ReadValue<Vector2>();
+                // UpdateLookingState(input);
+                
+            }
+
+            if (context.canceled)
+            {
+                _state.IsAiming = false;
+            }
+
+        }
+
+        public void OnFire(InputAction.CallbackContext context)
+        {
+            // check fire conditions
+            if (!_state.HasShield && !_state.IsAiming && !context.started) return;
+            
+            var selfPos = transform.position;
+            var spawnPos = selfPos + new Vector3(1.5f, 0f, 0f);
+
+            // instantiate shield
+            var shieldInstance = Instantiate(shield, spawnPos, _aimAssist.transform.rotation);
+            shieldInstance.transform.RotateAround(selfPos, Vector3.forward, _aimAssist.currentAngle);
+            
+            // throw shield
+            var shieldController = shieldInstance.GetComponent<ShieldController>();
+            shieldController.SetForceDirection(shieldInstance.transform.position - selfPos);
+            shieldController.ThrowShield();
+
+            // set states and active sprites
+            _state.HasShield = false;
+            _state.IsAiming = false;
+        }
+
+        private void UpdateSprite()
+        {
+            if (_state.HasShield)
+            {
+                
+                _currentRightFacingSprite = spriteGuyWithShieldFacingRight;
+                _currentLeftFacingSprite = spriteGuyWithShieldFacingLeft;
             }
             else
             {
-                _currentLeftFacingSprite = spriteGuyWithShieldFacingLeft;
-                _currentRightFacingSprite = spriteGuyWithShieldFacingRight;
+                _currentRightFacingSprite = spriteGuyWithoutShieldFacingRight;
+                _currentLeftFacingSprite = spriteGuyWithoutShieldFacingLeft;
             }
 
-            if (_states.lookingRight) _spriteRenderer.sprite = _currentRightFacingSprite;
-            else _spriteRenderer.sprite = _currentLeftFacingSprite;
+            _spriteRenderer.sprite = _state.IsLookingRight ? _currentRightFacingSprite : _currentLeftFacingSprite;
         }
-        public bool GetStateHasShield() { return _states.hasShield; }
-        public void SetStateIsGrounded( bool s ) {_states.isGrounded = s;}
-        public bool GetStateIsGrounded() { return _states.isGrounded; }
-        public void SetStateLookingRight(bool s) {_states.lookingRight = s;}
-        public bool GetStateLookingRight() {return _states.lookingRight;}
 
         public void OnCollisionEnter2D(Collision2D other)
         {
             if (other.gameObject.CompareTag("Shield"))
             {
-                SetStateHasShield(true);
+                _state.HasShield = true;
                 Destroy(other.gameObject);
             }
             else if (other.gameObject.CompareTag("Ground"))
             {
-                SetStateIsGrounded(true);
+                _state.IsGrounded = true;
             }
         }
 
@@ -176,15 +190,4 @@ namespace Player
         public void OnDamageableEvent( Damager damager, Damageable damageable) {print("HITTING SOMETHING!");}
         public void OnNonDamageableEvent(Damager damager) {print("HITTING SOMETHING THAT ISN'T DAMAGEABLE");}
     }
-    
-    struct States
-    {
-        // movement states
-        public bool isGrounded;
-        public bool lookingRight;
-
-        // Shield states
-        public bool hasShield;
-        public bool isAiming;
-    };
 }

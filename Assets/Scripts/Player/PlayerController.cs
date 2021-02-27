@@ -20,7 +20,7 @@ namespace Player
         private PlayerMovement _playerMovement;
 
         // Private variables
-        private StateController _state;
+        private Player.StateController _state;
         private SpriteRenderer _spriteRenderer;
         private Sprite _currentLeftFacingSprite;
         private Sprite _currentRightFacingSprite;
@@ -124,8 +124,8 @@ namespace Player
         public void OnFire(InputAction.CallbackContext context)
         {
             // check fire conditions
-            if (!_state.HasShield && !_state.IsAiming && !context.started) return;
-            
+            if (!_state.HasShield && !_state.IsAiming /*&& !context.started*/) return;
+
             var selfPos = transform.position;
             var spawnPos = selfPos + new Vector3(1.5f, 0f, 0f);
 

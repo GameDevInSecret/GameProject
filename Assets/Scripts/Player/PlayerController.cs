@@ -94,17 +94,26 @@ namespace Player
             //TODO: add timer/check for mouse input no-change to disable arrow on no aim with mouse
             //TODO: update sprite based on look?
             
+            var input = context.ReadValue<Vector2>();
+        
+            // adjust input values for mouse input
+            if (context.control.name.Equals("position"))
+            {
+                Vector2 playerPos = _camera.WorldToScreenPoint(transform.position);
+                input -= playerPos;
+            }
+            
             if (_state.HasShield)
             {
                 _state.IsAiming = true;
-                _aimAssist.OnAim(context);
+                _aimAssist.OnAim(input);
                 
                 // update look state for sprite rendering
                 // var input = context.ReadValue<Vector2>();
                 // UpdateLookingState(input);
                 
             }
-
+            
             if (context.canceled)
             {
                 _state.IsAiming = false;

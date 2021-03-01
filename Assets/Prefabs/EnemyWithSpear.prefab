@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 4937606557088347302}
   - component: {fileID: 2184735412803149406}
   - component: {fileID: 3972935870045659190}
+  - component: {fileID: 571243651}
   m_Layer: 10
   m_Name: EnemyWithSpear
   m_TagString: Untagged
@@ -133,7 +134,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &4937606557088347302
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,6 +215,30 @@ MonoBehaviour:
     type: 3}
   pointA: {x: 0, y: 0}
   pointB: {x: 0, y: 0}
+--- !u!114 &571243651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5205605759791943605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25b320e087aba09439b3324a13199839, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentState: {fileID: 11400000, guid: 474be591b1d4ad54ba8f3d7ce3a10b84, type: 2}
+  remainInState: {fileID: 11400000, guid: 2aa2b5f743f089c4b877f499b5075f50, type: 2}
+  speed: 1
+  attackSpeed: 2
+  guardPoint: {x: -5.58, y: -4}
+  activiationRange: 5
+  pauseTime: 2.5
+  chaseTarget: {fileID: 0}
+  lookLayers:
+    serializedVersion: 2
+    m_Bits: 256
+  returnBound: 0.1
 --- !u!1001 &344046335557382394
 PrefabInstance:
   m_ObjectHideFlags: 0

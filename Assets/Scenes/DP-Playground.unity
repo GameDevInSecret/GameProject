@@ -341,6 +341,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 571243651, guid: 7ace052469440a149acaa250731a8b11, type: 3}
+      propertyPath: chaseTarget
+      value: 
+      objectReference: {fileID: 1993051690}
     - target: {fileID: 2247922956073792248, guid: 7ace052469440a149acaa250731a8b11,
         type: 3}
       propertyPath: m_RootOrder
@@ -349,7 +353,7 @@ PrefabInstance:
     - target: {fileID: 2247922956073792248, guid: 7ace052469440a149acaa250731a8b11,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.1323814
+      value: -5.58
       objectReference: {fileID: 0}
     - target: {fileID: 2247922956073792248, guid: 7ace052469440a149acaa250731a8b11,
         type: 3}
@@ -403,26 +407,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7ace052469440a149acaa250731a8b11, type: 3}
---- !u!1 &571243650 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5205605759791943605, guid: 7ace052469440a149acaa250731a8b11,
-    type: 3}
-  m_PrefabInstance: {fileID: 571243649}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &571243651
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 571243650}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ae80f3ccb0b9be43bbbf8fb72a64bb0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentState: {fileID: 0}
-  RemainInState: {fileID: 11400000, guid: 0da56abebcff95d468c10531887e47e6, type: 2}
 --- !u!1 &664760699
 GameObject:
   m_ObjectHideFlags: 0
@@ -1028,6 +1012,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1993051690 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1330292069433469254, guid: 37e5e55cf1f3ed44fb6e7635826eba4e,
+    type: 3}
+  m_PrefabInstance: {fileID: 1386152014}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8420337476136354009
 PrefabInstance:
   m_ObjectHideFlags: 0

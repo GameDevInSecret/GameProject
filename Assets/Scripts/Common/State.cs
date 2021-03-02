@@ -7,6 +7,7 @@ public class State : ScriptableObject
 {
     public Action[] actions;
     public Transition[] transitions;
+    public Color stateColor;
 
     public void UpdateState(StateController controller)
     {

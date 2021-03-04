@@ -35,21 +35,17 @@ public class Damager : MonoBehaviour
     [Tooltip("After colliding with a damageable, the time before the damager becomes active again")]
     public float backoffTime = 0.25F;
     [Tooltip("If set true, the damager will remain inactive until manually set to active.")]
-    public bool indefiniteBackoff = false;
-    public bool active = true;
-    
+    public bool indefiniteBackoff;
+
     [Header("Events")]
     public DamageableEvent OnDamageableEvent;
     public NonDamageableEvent OnNonDamageableEvent;
     
-    [Header("Debugging")]
-    public GameObject debugPointPrefab;
-    private GameObject pointADebug;
-    private GameObject pointBDebug;
-    
     protected Transform m_DamagerTransform;
     protected ContactFilter2D m_AttackContactFilter;
     protected Collider2D[] m_AttackOverlapResults = new Collider2D[10];
+
+    private Vector2 scaledSize;
 
     [SerializeField] private Vector2 pointA;
     [SerializeField] private Vector2 pointB;
@@ -59,15 +55,10 @@ public class Damager : MonoBehaviour
         m_AttackContactFilter.layerMask = hittableLayers;
         m_AttackContactFilter.useLayerMask = true;
         m_DamagerTransform = transform;
-
-        pointADebug = Instantiate(debugPointPrefab, transform.position, debugPointPrefab.transform.rotation);
-        pointBDebug = Instantiate(debugPointPrefab, transform.position, debugPointPrefab.transform.rotation);
     }
     
     void FixedUpdate()
     {
-        if (!canDamage) return;
-
         if (movable) offset = transform.Find("Hitbox Center").transform.position - transform.position;
 
         // Get the scale of the transform
@@ -75,7 +66,7 @@ public class Damager : MonoBehaviour
         // Multiply the size and scale so that if the parent is scaled up or down, the hitbox scales with it.
         Vector2 scale = m_DamagerTransform.lossyScale;
         Vector2 facingOffset = Vector2.Scale(offset, scale);
-        Vector2 scaledSize = Vector2.Scale(size, scale);
+        scaledSize = Vector2.Scale(size, scale);
 
         // From the hitbox rectangle, get one corner and the corner opposite it for the OverlapArea function
         // Point A is the position of the transform, moved left or right by facingOffset (this is the center of the hitbox
@@ -84,10 +75,12 @@ public class Damager : MonoBehaviour
         pointA = (Vector2) m_DamagerTransform.position + facingOffset - scaledSize * 0.5F;
         pointB = pointA + scaledSize;
 
-        pointADebug.transform.position = pointA;
-        pointBDebug.transform.position = pointB;
+        // pointADebug.transform.position = pointA;
+        // pointBDebug.transform.position = pointB;
         
         // print("A: " + pointA + " B: " + pointB);
+        
+        if (!canDamage) return;
 
         int hitCount = Physics2D.OverlapArea(pointA, pointB, m_AttackContactFilter, m_AttackOverlapResults);
 
@@ -97,11 +90,11 @@ public class Damager : MonoBehaviour
         {
             Damageable damageable = m_AttackOverlapResults[i].GetComponent<Damageable>();
 
-            if (damageable && active)
+            if (damageable && canDamage)
             {
                 // OnDamageableEvent.Invoke(this, damageable);
                 damageable.OnTakeDamage.Invoke(this, damageable);
-                active = false;
+                canDamage = false;
                 if (!indefiniteBackoff)
                 {
                     StartCoroutine(BackoffCallback());
@@ -113,20 +106,21 @@ public class Damager : MonoBehaviour
             }
         }
     }
-
-    private void OnDestroy()
-    {
-        Destroy(pointADebug);
-        Destroy(pointBDebug);
-    }
-
+    
     IEnumerator BackoffCallback()
     {
         yield return new WaitForSeconds(backoffTime);
-        active = true;
+        canDamage = true;
     }
 
     public bool DamagerActive() { return canDamage; }
     public void EnableDamager() { canDamage = true; }
     public void DisableDamager() { canDamage = false; }
+
+    private void OnDrawGizmos()
+    {
+        if ( canDamage ) Gizmos.color = new Color(255, 0, 0, 0.5F);
+        else Gizmos.color = new Color(0, 0, 255, 0.25F);
+        Gizmos.DrawCube(pointA + scaledSize * 0.5F, size);
+    }
 }

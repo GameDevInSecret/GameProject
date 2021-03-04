@@ -75,6 +75,7 @@ public class Damageable : MonoBehaviour
             m_Invulnerable = true;
             //technically don't ignore timer, just set it to an insanly big number. Allow to avoid to add more test & special case.
             m_InulnerabilityTimer = ignoreTimer ? float.MaxValue : invulnerabilityDuration;
+            if (ignoreTimer) StartCoroutine(InvulnerabilityCallback());
         }
 
         public void DisableInvulnerability()
@@ -91,6 +92,8 @@ public class Damageable : MonoBehaviour
         {
             if ((m_Invulnerable && !ignoreInvincible) || m_CurrentHealth <= 0)
                 return;
+            
+            print("IGNORING INVINCIBILITY");
 
             //we can reach that point if the damager was one that was ignoring invincible state.
             //We still want the callback that we were hit, but not the damage to be removed from health.
@@ -98,6 +101,7 @@ public class Damageable : MonoBehaviour
             {
                 m_CurrentHealth -= damager.damage;
                 OnHealthSet.Invoke(this);
+                EnableInvulnerability(invulnerableAfterDamage);
             }
 
             m_DamageDirection = transform.position + (Vector3)centreOffset - damager.transform.position;
@@ -138,6 +142,14 @@ public class Damageable : MonoBehaviour
             }
 
             OnHealthSet.Invoke(this);
+        }
+
+        IEnumerator InvulnerabilityCallback()
+        {
+            print("BECOMING INVINCIBLE!");
+            yield return new WaitForSeconds(invulnerabilityDuration);
+            m_Invulnerable = false;
+            print("NO LONGER INVINCIBLE!");
         }
 
         // public DataSettings GetDataSettings()

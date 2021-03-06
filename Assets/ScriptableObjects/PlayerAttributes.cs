@@ -26,7 +26,7 @@ public class PlayerAttributes : ScriptableObject, ISerializationCallbackReceiver
     public int LowerHealth(int val)
     {
         _rtHealth -= val;
-        Debug.Log("HEALTH LOWERED TO " + _rtHealth + " (-" + val + ")");
+        // Debug.Log("HEALTH LOWERED TO " + _rtHealth + " (-" + val + ")");
         healthEvent.Raise();
         return _rtHealth; 
     }
@@ -34,7 +34,7 @@ public class PlayerAttributes : ScriptableObject, ISerializationCallbackReceiver
     public int RaiseHealth(int val)
     {
         _rtHealth += val;
-        Debug.Log("HEALTH RAISE TO " + _rtHealth + " (+" + val + ")");
+        // Debug.Log("HEALTH RAISE TO " + _rtHealth + " (+" + val + ")");
         healthEvent.Raise();
         return _rtHealth;
     }

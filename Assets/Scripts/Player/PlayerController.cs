@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
@@ -8,11 +10,13 @@ namespace Player
     public class PlayerController : MonoBehaviour
     {
         // Public variables
+        [Header("Sprites")]
         public Sprite spriteGuyWithShieldFacingRight;
         public Sprite spriteGuyWithShieldFacingLeft;
         public Sprite spriteGuyWithoutShieldFacingRight;
         public Sprite spriteGuyWithoutShieldFacingLeft;
 
+        [Header("Attributes")]
         [SerializeField] private PlayerHealthEvent healthEvent;
         public PlayerAttributes attributes;
         
@@ -32,8 +36,17 @@ namespace Player
         private Camera _camera;
         private AimAssist _aimAssist;
 
+        [Header("Shield Variables")]
         public GameObject shield;
         
+        // jumping variables
+        [Header("Jump Variables")]
+        [SerializeField] private LayerMask _jumpBufferLayerMask;
+        [SerializeField] private float _minDistanceToBufferJump = 0.1F;
+        [SerializeField] private Transform _leftBufferRayPosition;
+        [SerializeField] private Transform _rightBufferRayPosition;
+        private bool _jumpBuffered = false;
+
         // Start is called before the first frame update
         private void Start()
         {
@@ -55,7 +68,17 @@ namespace Player
             _state = new StateController();
             
         }
-        
+
+        private void Update()
+        {
+            if (_state.IsGrounded && _jumpBuffered)
+            {
+                _jumpBuffered = false;
+                _playerMovement.OnJump();
+                _state.IsGrounded = false;
+            }
+        }
+
         private void FixedUpdate()
         {
             _playerMovement.UpdateMovement();
@@ -85,6 +108,17 @@ namespace Player
             {
                 _playerMovement.OnJump();
                 _state.IsGrounded = false;
+            }
+            else if (!_state.IsGrounded && context.started)
+            {
+                if (CloseToGround())
+                {
+                    _jumpBuffered = true;
+                }
+            }
+            else if (!_state.IsGrounded && context.canceled)
+            {
+                _playerMovement.OnJump(false);
             }
         }
 
@@ -198,5 +232,32 @@ namespace Player
         
         public void OnDamageableEvent( Damager damager, Damageable damageable) {print("HITTING SOMETHING!");}
         public void OnNonDamageableEvent(Damager damager) {print("HITTING SOMETHING THAT ISN'T DAMAGEABLE");}
+
+        private bool CloseToGround()
+        {
+            Vector2 leftStartPoint = _leftBufferRayPosition.transform.position;
+            RaycastHit2D hit = Physics2D.Raycast(leftStartPoint, Vector2.down, _minDistanceToBufferJump ,_jumpBufferLayerMask);
+
+            if (hit)
+            {
+                if (hit.transform.CompareTag("Ground"))
+                {
+                    return true;
+                }
+            }
+
+            Vector2 rightStartPoint = _rightBufferRayPosition.transform.position;
+            hit = Physics2D.Raycast(rightStartPoint, Vector2.down, _minDistanceToBufferJump ,_jumpBufferLayerMask);
+            
+            if (hit)
+            {
+                if (hit.transform.CompareTag("Ground"))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }

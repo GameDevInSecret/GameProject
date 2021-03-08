@@ -468,10 +468,10 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 9c240e23c68b1c74c9fe6f3f4cad29ac, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 7
 --- !u!212 &664760702
 SpriteRenderer:
@@ -598,7 +598,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 9c240e23c68b1c74c9fe6f3f4cad29ac, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -751,6 +751,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 215217004, guid: 37e5e55cf1f3ed44fb6e7635826eba4e, type: 3}
+      propertyPath: _leftBufferRayPosition
+      value: 
+      objectReference: {fileID: 1386152016}
+    - target: {fileID: 215217004, guid: 37e5e55cf1f3ed44fb6e7635826eba4e, type: 3}
+      propertyPath: _rightBufferRayPosition
+      value: 
+      objectReference: {fileID: 1386152015}
+    - target: {fileID: 215217004, guid: 37e5e55cf1f3ed44fb6e7635826eba4e, type: 3}
+      propertyPath: _minDistanceToBufferJump
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 215217004, guid: 37e5e55cf1f3ed44fb6e7635826eba4e, type: 3}
+      propertyPath: _jumpBufferLayerMask.m_Bits
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1330292069433469250, guid: 37e5e55cf1f3ed44fb6e7635826eba4e,
         type: 3}
       propertyPath: m_Name
@@ -813,6 +829,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 37e5e55cf1f3ed44fb6e7635826eba4e, type: 3}
+--- !u!4 &1386152015 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7893824545719101382, guid: 37e5e55cf1f3ed44fb6e7635826eba4e,
+    type: 3}
+  m_PrefabInstance: {fileID: 1386152014}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1386152016 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5409908148141150940, guid: 37e5e55cf1f3ed44fb6e7635826eba4e,
+    type: 3}
+  m_PrefabInstance: {fileID: 1386152014}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1453422769
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -943,7 +971,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 9c240e23c68b1c74c9fe6f3f4cad29ac, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0

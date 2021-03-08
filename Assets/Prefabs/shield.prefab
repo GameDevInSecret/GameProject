@@ -145,7 +145,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 547470cad68658b4595cfea9136cad5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forceDir: {x: 1, y: 0, z: 0}
   sparks: {fileID: 0}
 --- !u!114 &2430950548349681625
 MonoBehaviour:
@@ -168,9 +167,8 @@ MonoBehaviour:
   movable: 1
   offset: {x: 0, y: 0}
   size: {x: 0.5, y: 0.5}
-  backoffTime: 0.25
-  indefiniteBackoff: 0
-  active: 1
+  backoffTime: 100
+  indefiniteBackoff: 1
   OnDamageableEvent:
     m_PersistentCalls:
       m_Calls: []

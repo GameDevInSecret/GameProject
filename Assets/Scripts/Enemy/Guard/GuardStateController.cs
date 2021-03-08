@@ -12,9 +12,17 @@ public class GuardStateController : StateController
     public float pauseTime;
     public Transform chaseTarget;
     public LayerMask lookLayers;
-    
-    public float returnBound = 0.1F;
 
+    public float returnBound = 0.1F;
+    public Damager _damager;
+
+    public GuardAttack1 guardAttack1;
+
+    public void Start()
+    {
+        _damager = GetComponent<Damager>();
+        guardAttack1 = GetComponent<GuardAttack1>();
+    }
     private void OnDrawGizmos()
     {
         Gizmos.color = currentState.stateColor;

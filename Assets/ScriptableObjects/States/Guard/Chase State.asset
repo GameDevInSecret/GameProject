@@ -10,11 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b7c690405f024a745804e048dba5b9b1, type: 3}
-  m_Name: Guard State
+  m_Name: Chase State
   m_EditorClassIdentifier: 
-  actions: []
+  actions:
+  - {fileID: 11400000, guid: 043287a48d3a5804bafdee199d8268ec, type: 2}
   transitions:
   - decision: {fileID: 11400000, guid: 5e89ee39f8ca2904da719392a9cd99f5, type: 2}
-    trueState: {fileID: 11400000, guid: 78182d8a163c89f478f24cf888203264, type: 2}
+    trueState: {fileID: 11400000, guid: 0da56abebcff95d468c10531887e47e6, type: 2}
+    falseState: {fileID: 11400000, guid: 0fa0020406a6d1c45b066684159fae8a, type: 2}
+  - decision: {fileID: 11400000, guid: b3308c00bbe416649a5b39284634e95f, type: 2}
+    trueState: {fileID: 11400000, guid: 72673e3b1415b364abf8e6c198f19416, type: 2}
     falseState: {fileID: 11400000, guid: 0da56abebcff95d468c10531887e47e6, type: 2}
-  stateColor: {r: 0, g: 1, b: 0, a: 1}
+  stateColor: {r: 1, g: 0, b: 0, a: 1}

@@ -43,9 +43,20 @@ namespace Player
         [Header("Jump Variables")]
         [SerializeField] private LayerMask _jumpBufferLayerMask;
         [SerializeField] private float _minDistanceToBufferJump = 0.1F;
-        [SerializeField] private Transform _leftBufferRayPosition;
-        [SerializeField] private Transform _rightBufferRayPosition;
+        [SerializeField] private Transform _leftBufferRay;
+        [SerializeField] private Transform _rightBufferRay;
+        private bool _leftBufferRayHit = false;
+        private bool _RightBufferRayHit = false;
         private bool _jumpBuffered = false;
+        
+        // Is Grounded variables
+        [Header("Is Grounded Variables")] 
+        [SerializeField] private LayerMask _groundedLayerMask;
+        [SerializeField] private Transform _leftGroundedRay;
+        [SerializeField] private Transform _midGroundedRay;
+        [SerializeField] private Transform _rightGroundedRay;
+        private float _groundedDistance = 0.2F;
+        [SerializeField] private bool grounded;
 
         // Start is called before the first frame update
         private void Start()
@@ -71,11 +82,21 @@ namespace Player
 
         private void Update()
         {
+            _state.IsGrounded = CheckIsOnGround();
+            grounded = _state.IsGrounded;
+            
+            CloseToGround();
+            
             if (_state.IsGrounded && _jumpBuffered)
             {
                 _jumpBuffered = false;
+                
+                // we need to stop the player's velocity because the rays extend below the box collider
+                // if we don't stop all movement before doing the jump, the downward momentum will consume the
+                // jump force and the player won't go back upwards after _state.IsGrounded gets set to true
+                _playerMovement.ZeroVelocity();
+                
                 _playerMovement.OnJump();
-                _state.IsGrounded = false;
             }
         }
 
@@ -106,19 +127,23 @@ namespace Player
             // context.started check to prevent second jump on button release
             if (_state.IsGrounded && context.started)
             {
+                print("Normal Jump");
                 _playerMovement.OnJump();
-                _state.IsGrounded = false;
+                // _state.IsGrounded = false;
             }
-            else if (!_state.IsGrounded && context.started)
+            else if (!_state.IsGrounded && context.started && CloseToGround())
             {
-                if (CloseToGround())
-                {
-                    _jumpBuffered = true;
-                }
+                print("Buffered");
+                _jumpBuffered = true;
             }
             else if (!_state.IsGrounded && context.canceled)
             {
+                print("Stopping Jump");
                 _playerMovement.OnJump(false);
+            }
+            else
+            {
+                print("I NO KNOW WHAT TO DO");
             }
         }
 
@@ -235,27 +260,75 @@ namespace Player
 
         private bool CloseToGround()
         {
-            Vector2 leftStartPoint = _leftBufferRayPosition.transform.position;
-            RaycastHit2D hit = Physics2D.Raycast(leftStartPoint, Vector2.down, _minDistanceToBufferJump ,_jumpBufferLayerMask);
-
-            if (hit)
-            {
-                if (hit.transform.CompareTag("Ground"))
-                {
-                    return true;
-                }
-            }
-
-            Vector2 rightStartPoint = _rightBufferRayPosition.transform.position;
-            hit = Physics2D.Raycast(rightStartPoint, Vector2.down, _minDistanceToBufferJump ,_jumpBufferLayerMask);
+            bool leftHit = false;
+            bool rightHit = false;
             
-            if (hit)
+            Vector2 leftStartPoint = _leftBufferRay.transform.position;
+            RaycastHit2D hitLeft = Physics2D.Raycast(leftStartPoint, Vector2.down, _minDistanceToBufferJump ,_jumpBufferLayerMask);
+
+            if (hitLeft)
             {
-                if (hit.transform.CompareTag("Ground"))
+                if (hitLeft.transform.CompareTag("Ground"))
                 {
-                    return true;
+                    _leftBufferRayHit = true;
+                    leftHit = true;
                 }
             }
+            else
+            {
+                _leftBufferRayHit = false;
+            }
+            
+            Vector2 rightStartPoint = _rightBufferRay.transform.position;
+            RaycastHit2D hitRight = Physics2D.Raycast(rightStartPoint, Vector2.down, _minDistanceToBufferJump, _jumpBufferLayerMask);
+
+            if (hitRight)
+            {
+                if (hitRight.transform.CompareTag("Ground"))
+                {
+                    _RightBufferRayHit = true;
+                    rightHit = true;
+                }
+            }
+            else
+            {
+                _RightBufferRayHit = false;
+            }
+
+            return leftHit || rightHit;
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (_leftBufferRayHit) Gizmos.color = Color.blue;
+            else Gizmos.color = Color.red;
+            Gizmos.DrawRay(_leftBufferRay.position, Vector2.down * _minDistanceToBufferJump);
+            
+            if (_RightBufferRayHit) Gizmos.color = Color.blue;
+            else Gizmos.color = Color.red;
+            Gizmos.DrawRay(_rightBufferRay.position, Vector2.down * _minDistanceToBufferJump);
+            
+            // Gizmos.color = Color.red;
+            // Gizmos.DrawRay(_leftGroundedRay.position, Vector2.down * _groundedDistance);
+            // Gizmos.DrawRay(_midGroundedRay.position, Vector2.down * _groundedDistance);
+            // Gizmos.DrawRay(_rightGroundedRay.position, Vector2.down * _groundedDistance);
+        }
+
+        private bool CheckIsOnGround()
+        {
+            RaycastHit2D hit;
+            
+            Vector2 leftStartPoint = _leftGroundedRay.transform.position;
+            hit = Physics2D.Raycast(leftStartPoint, Vector2.down, _groundedDistance ,_groundedLayerMask);
+            if (hit && hit.transform.CompareTag("Ground")) return true;
+            
+            Vector2 midStartPoint = _midGroundedRay.transform.position;
+            hit = Physics2D.Raycast(midStartPoint, Vector2.down, _groundedDistance ,_groundedLayerMask);
+            if (hit && hit.transform.CompareTag("Ground")) return true;
+            
+            Vector2 rightStartPoint = _rightGroundedRay.transform.position;
+            hit = Physics2D.Raycast(rightStartPoint, Vector2.down, _groundedDistance ,_groundedLayerMask);
+            if (hit && hit.transform.CompareTag("Ground")) return true;
 
             return false;
         }

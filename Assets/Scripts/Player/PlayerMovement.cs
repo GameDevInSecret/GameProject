@@ -73,6 +73,11 @@ namespace Player
         {
             _momentumVector = new Vector2(input.x, 0);
         }
+
+        public void ZeroVelocity()
+        {
+            _rigidbody2D.velocity = Vector2.zero;
+        }
         
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
+    public GameObject blood;
     private Damager _damager;
     // Start is called before the first frame update
     void Start()
@@ -26,6 +27,7 @@ public class EnemyController : MonoBehaviour
     public void OnDie(Damager damager, Damageable damageable)
     {
         print("ENEMY DEAD");
+        Instantiate(blood, transform.position, blood.transform.rotation);
         Destroy(gameObject);
     }
     

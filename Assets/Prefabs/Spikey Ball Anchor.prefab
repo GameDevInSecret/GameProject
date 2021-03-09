@@ -122,7 +122,6 @@ GameObject:
   - component: {fileID: 7213433344155710465}
   - component: {fileID: 2054704566}
   - component: {fileID: 3323153560613042344}
-  - component: {fileID: 7629987237067667816}
   m_Layer: 9
   m_Name: Spikey Ball Anchor
   m_TagString: Untagged
@@ -181,41 +180,11 @@ MonoBehaviour:
   size: {x: 0.8, y: 0.8}
   backoffTime: 0.5
   indefiniteBackoff: 0
-  active: 1
   OnDamageableEvent:
     m_PersistentCalls:
       m_Calls: []
   OnNonDamageableEvent:
     m_PersistentCalls:
       m_Calls: []
-  debugPointPrefab: {fileID: 9173607954042685336, guid: 6cefa1844677a3e42802a6fc90a88f67,
-    type: 3}
   pointA: {x: 0, y: 0}
   pointB: {x: 0, y: 0}
---- !u!114 &7629987237067667816
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6574578955815481556}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c05c80d552970ab4198747be68fd89f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Event: {fileID: 11400000, guid: 693079bef9e1fa34680c0bb0f161338c, type: 2}
-  Response:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2054704566}
-        m_MethodName: TestResponse
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2

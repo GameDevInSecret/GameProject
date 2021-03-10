@@ -92,8 +92,8 @@ namespace Player
                 _jumpBuffered = false;
                 
                 // we need to stop the player's velocity because the rays extend below the box collider
-                // if we don't stop all movement before doing the jump, the downward momentum will consume the
-                // jump force and the player won't go back upwards after _state.IsGrounded gets set to true
+                // if we don't stop the Y movement before doing the jump, the downward momentum will consume the
+                // jump force and the player won't go back up after _state.IsGrounded gets set to true
                 _playerMovement.ZeroYVelocity();
                 
                 _playerMovement.OnJump();
@@ -127,23 +127,16 @@ namespace Player
             // context.started check to prevent second jump on button release
             if (_state.IsGrounded && context.started)
             {
-                print("Normal Jump");
                 _playerMovement.OnJump();
                 // _state.IsGrounded = false;
             }
             else if (!_state.IsGrounded && context.started && CloseToGround())
             {
-                print("Buffered");
                 _jumpBuffered = true;
             }
             else if (!_state.IsGrounded && context.canceled)
             {
-                print("Stopping Jump");
                 _playerMovement.OnJump(false);
-            }
-            else
-            {
-                print("I NO KNOW WHAT TO DO");
             }
         }
 

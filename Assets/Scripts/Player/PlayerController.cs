@@ -94,7 +94,7 @@ namespace Player
                 // we need to stop the player's velocity because the rays extend below the box collider
                 // if we don't stop all movement before doing the jump, the downward momentum will consume the
                 // jump force and the player won't go back upwards after _state.IsGrounded gets set to true
-                _playerMovement.ZeroVelocity();
+                _playerMovement.ZeroYVelocity();
                 
                 _playerMovement.OnJump();
             }

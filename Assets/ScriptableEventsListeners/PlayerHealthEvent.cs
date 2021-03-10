@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu (menuName = "Events/Player/Health")]
 public class PlayerHealthEvent : ScriptableObject
 {
     private List<PlayerHealthEventListener> subs = new List<PlayerHealthEventListener>();

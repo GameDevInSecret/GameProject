@@ -7,6 +7,11 @@ using Vector3 = UnityEngine.Vector3;
 
 public class ShieldController : MonoBehaviour
 {
+    public CameraShakeEvent cameraShakeEvent;
+    public float cameraShakeIntensitity;
+    public float cameraShakeDuration;
+    
+    
     private Vector3 forceDirection;
     
     private Rigidbody2D shieldRb;
@@ -27,6 +32,7 @@ public class ShieldController : MonoBehaviour
         //shieldRb.AddForce(forceDir * 30, ForceMode2D.Impulse);
         shieldRb.AddForce(forceDirection * 30, ForceMode2D.Impulse);
         shieldRb.AddTorque(5, ForceMode2D.Impulse);
+        cameraShakeEvent.Raise(cameraShakeIntensitity, cameraShakeDuration);
     }
 
     private void OnCollisionEnter2D(Collision2D other)

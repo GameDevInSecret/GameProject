@@ -128,10 +128,10 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
+  m_Material: {fileID: 6200000, guid: 117034957e2fafb4e8c7279a3cce8c5e, type: 2}
+  m_Interpolate: 1
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!114 &1779618034260880428
 MonoBehaviour:
@@ -145,6 +145,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 547470cad68658b4595cfea9136cad5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraShakeEvent: {fileID: 11400000, guid: 2bd429db919654e4a88ecd3da577e5ac, type: 2}
+  cameraShakeIntensitity: 5
+  cameraShakeDuration: 0.2
   sparks: {fileID: 0}
 --- !u!114 &2430950548349681625
 MonoBehaviour:
@@ -175,8 +178,6 @@ MonoBehaviour:
   OnNonDamageableEvent:
     m_PersistentCalls:
       m_Calls: []
-  debugPointPrefab: {fileID: 9173607954042685336, guid: 6cefa1844677a3e42802a6fc90a88f67,
-    type: 3}
   pointA: {x: 0, y: 0}
   pointB: {x: 0, y: 0}
 --- !u!1 &7898747920012305571

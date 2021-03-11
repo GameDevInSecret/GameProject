@@ -2821,8 +2821,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1721507163}
   - component: {fileID: 1721507162}
-  - component: {fileID: 1721507165}
-  - component: {fileID: 1721507164}
   m_Layer: 0
   m_Name: CM vcam1
   m_TagString: Untagged

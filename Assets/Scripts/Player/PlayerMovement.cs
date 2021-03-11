@@ -8,7 +8,11 @@ namespace Player
     {
         private Rigidbody2D _rigidbody2D;
         
-        private Vector2 _momentumVector = Vector2.zero;
+        [SerializeField] private Vector2 _momentumVector = Vector2.zero;
+        [SerializeField] private Vector2 mVelocity;
+        [SerializeField] private Vector2 inputVector;
+        [SerializeField] private bool changingDirection;
+        
         
         public float gravityMultiplier = 2f;
         public float jumpForce = 150f;
@@ -18,9 +22,12 @@ namespace Player
         public float jumpUpSlowDownMultiplier = 0.5f;
         [Tooltip("How fast the player should accelerate towards the ground after falling from a jump")]
         public float jumpFallMultiplier = 1.01f;
+        [Tooltip("The maximum fall (positive) velocity to stop acceleration at")]
+        public float jumpFallMaxSpeed;
         [Tooltip("How fast the player can slow down")]
         [Range(0.0F, 1.0F)]
         public float runningTractionMultiplier = 0.85f;
+        public float runningChangeDirectionMultiplier = 0.9f;
 
         private void Start()
         {
@@ -29,9 +36,18 @@ namespace Player
             Physics2D.gravity *= gravityMultiplier;
         }
 
-        public void Update()
+        public void FixedUpdate()
         {
-            if (_rigidbody2D.velocity.y < 0)
+            mVelocity = _rigidbody2D.velocity;
+            changingDirection = ChangingDirections();
+
+            if ((_rigidbody2D.velocity.x < 0 && _momentumVector.x > 0) || (_rigidbody2D.velocity.x > 0 && _momentumVector.x < 0))
+            {
+                print("IDKIDKIDKIDK");
+                UpdateMomentumVector(inputVector);
+            }
+
+            if (_rigidbody2D.velocity.y < 0 && _rigidbody2D.velocity.y >= -jumpFallMaxSpeed)
             {
                 _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, _rigidbody2D.velocity.y * jumpFallMultiplier);
             }
@@ -53,6 +69,7 @@ namespace Player
 
         public void OnMove(Vector2 input)
         {
+            inputVector = input;
             UpdateMomentumVector(input);
         }
 
@@ -66,17 +83,37 @@ namespace Player
             if (_momentumVector == Vector2.zero)
             {
                 _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x * runningTractionMultiplier, _rigidbody2D.velocity.y);
+            } else if (ChangingDirections())
+            {
+                _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x * runningChangeDirectionMultiplier, _rigidbody2D.velocity.y);
             }
         }
 
         private void UpdateMomentumVector(Vector2 input)
         {
+            // print(input.x);
             _momentumVector = new Vector2(input.x, 0);
         }
 
         public void ZeroVelocity()
         {
             _rigidbody2D.velocity = Vector2.zero;
+        }
+
+        public void ZeroYVelocity()
+        {
+            _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, 0);
+        }
+
+        public void ZeroXVelocity()
+        {
+            _rigidbody2D.velocity = new Vector2(0, _rigidbody2D.velocity.y);
+        }
+
+        private bool ChangingDirections()
+        {
+            return (_rigidbody2D.velocity.x < 0 && _momentumVector.x > 0) ||
+                   (_rigidbody2D.velocity.x > 0 && _momentumVector.x < 0);
         }
         
     }

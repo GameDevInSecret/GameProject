@@ -103,10 +103,10 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
+  m_Material: {fileID: 6200000, guid: 27597b7c543d89a42acc9a03daeaa53c, type: 2}
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
@@ -340,15 +340,16 @@ MonoBehaviour:
   _jumpBufferLayerMask:
     serializedVersion: 2
     m_Bits: 1
-  _minDistanceToBufferJump: 0.4
+  _minDistanceToBufferJump: 0.6
   _leftBufferRay: {fileID: 5409908148141150940}
   _rightBufferRay: {fileID: 7893824545719101382}
   _groundedLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1
   _leftGroundedRay: {fileID: 5234421686372382557}
   _midGroundedRay: {fileID: 51442841823933673}
   _rightGroundedRay: {fileID: 676851087145927683}
+  grounded: 0
 --- !u!114 &215217005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -366,8 +367,9 @@ MonoBehaviour:
   thrust: 17
   maxVelocity: 5
   jumpUpSlowDownMultiplier: 0.5
-  jumpFallMultiplier: 1.01
+  jumpFallMultiplier: 1.1
   runningTractionMultiplier: 0.95
+  runningChangeDirectionMultiplier: 0.9
 --- !u!70 &1440739262
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

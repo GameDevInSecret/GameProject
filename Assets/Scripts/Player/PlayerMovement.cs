@@ -21,6 +21,8 @@ namespace Player
         [Tooltip("How fast the player can slow down")]
         [Range(0.0F, 1.0F)]
         public float runningTractionMultiplier = 0.85f;
+        public float runningChangeDirectionMultiplier = 0.9f;
+        public float maxFallVelocity;
 
         private void Start()
         {
@@ -29,9 +31,9 @@ namespace Player
             Physics2D.gravity *= gravityMultiplier;
         }
 
-        public void Update()
+        public void FixedUpdate()
         {
-            if (_rigidbody2D.velocity.y < 0)
+            if (_rigidbody2D.velocity.y < 0 && _rigidbody2D.velocity.y < maxFallVelocity)
             {
                 _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, _rigidbody2D.velocity.y * jumpFallMultiplier);
             }
@@ -66,6 +68,9 @@ namespace Player
             if (_momentumVector == Vector2.zero)
             {
                 _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x * runningTractionMultiplier, _rigidbody2D.velocity.y);
+            } else if (ChangingDirection())
+            {
+                _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x * runningChangeDirectionMultiplier, _rigidbody2D.velocity.y);
             }
         }
 
@@ -77,6 +82,17 @@ namespace Player
         public void ZeroVelocity()
         {
             _rigidbody2D.velocity = Vector2.zero;
+        }
+
+        public void ZeroYVelocity()
+        {
+            _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, 0F);
+        }
+
+        private bool ChangingDirection()
+        {
+            return (_rigidbody2D.velocity.x < 0 && _momentumVector.x > 0) ||
+                   (_rigidbody2D.velocity.x > 0 && _momentumVector.x < 0);
         }
         
     }

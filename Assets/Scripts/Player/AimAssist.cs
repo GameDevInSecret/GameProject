@@ -6,7 +6,7 @@ namespace Player
     public class AimAssist : MonoBehaviour
     {
 
-        public float currentAngle;
+        public float currentAngle = 0.0F;
 
         private void FixedUpdate()
         {

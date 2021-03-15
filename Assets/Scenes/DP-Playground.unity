@@ -2654,6 +2654,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 692303537}
     - target: {fileID: 215217004, guid: 37e5e55cf1f3ed44fb6e7635826eba4e, type: 3}
+      propertyPath: shieldBlockedIndicator
+      value: 
+      objectReference: {fileID: 3404103568632981716, guid: ec48579da7709644991e6327a08e879f,
+        type: 3}
+    - target: {fileID: 215217004, guid: 37e5e55cf1f3ed44fb6e7635826eba4e, type: 3}
       propertyPath: _shieldBlockableLayers.m_Bits
       value: 1
       objectReference: {fileID: 0}
@@ -2880,7 +2885,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1532114607
 GameObject:
@@ -3302,7 +3307,7 @@ PrefabInstance:
     - target: {fileID: 8163509410285926386, guid: 970178ec8f0c79443ae10e94155f3abb,
         type: 3}
       propertyPath: m_RootOrder
-      value: 12
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 8163509410285926386, guid: 970178ec8f0c79443ae10e94155f3abb,
         type: 3}

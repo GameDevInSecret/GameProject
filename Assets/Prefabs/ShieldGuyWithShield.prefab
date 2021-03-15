@@ -336,6 +336,11 @@ MonoBehaviour:
     type: 3}
   healthEvent: {fileID: 11400000, guid: 693079bef9e1fa34680c0bb0f161338c, type: 2}
   attributes: {fileID: 11400000, guid: a75b5de481b3f974da1ec60b608542bc, type: 2}
+  _shieldBlockableLayers:
+    serializedVersion: 2
+    m_Bits: 1
+  shieldBlockedIndicator: {fileID: 3404103568632981716, guid: ec48579da7709644991e6327a08e879f,
+    type: 3}
   shield: {fileID: 3675948955171397367, guid: 67d3dd30c12b4614a89011cfac317c7d, type: 3}
   _jumpBufferLayerMask:
     serializedVersion: 2
@@ -370,6 +375,7 @@ MonoBehaviour:
   jumpFallMultiplier: 1.1
   runningTractionMultiplier: 0.95
   runningChangeDirectionMultiplier: 0.9
+  maxFallVelocity: 8
 --- !u!70 &1440739262
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

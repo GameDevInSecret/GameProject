@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Tilemaps;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
 
@@ -35,6 +36,10 @@ namespace Player
         // Aim tools
         private Camera _camera;
         private AimAssist _aimAssist;
+        private bool _blockedAim;
+        [SerializeField] private LayerMask _shieldBlockableLayers;
+        [SerializeField] private GameObject shieldBlockedIndicator;
+        private GameObject _blockIndicatorInstance;
 
         [Header("Shield Variables")]
         public GameObject shield;
@@ -76,6 +81,10 @@ namespace Player
             _currentRightFacingSprite = spriteGuyWithShieldFacingRight;
             _currentLeftFacingSprite = spriteGuyWithShieldFacingLeft;
 
+            _blockIndicatorInstance = Instantiate(shieldBlockedIndicator, transform.position,
+                shieldBlockedIndicator.transform.rotation);
+            _blockIndicatorInstance.SetActive(false);
+
             _state = new StateController();
             
         }
@@ -86,6 +95,7 @@ namespace Player
             grounded = _state.IsGrounded;
             
             CloseToGround();
+            ShieldThrowBlocked();
             
             if (_state.IsGrounded && _jumpBuffered)
             {
@@ -104,8 +114,9 @@ namespace Player
         {
             _playerMovement.UpdateMovement();
 
-            _aimAssist.gameObject.SetActive(_state.IsAiming);
-            
+            _aimAssist.gameObject.SetActive(_state.IsAiming && !_blockedAim);
+            _blockIndicatorInstance.SetActive(_state.IsAiming && _blockedAim);
+
             UpdateSprite();
 
         }
@@ -165,12 +176,15 @@ namespace Player
             if (_state.HasShield)
             {
                 _state.IsAiming = true;
+
                 _aimAssist.OnAim(input);
-                
+
+                ShieldThrowBlocked();
+
                 // update look state for sprite rendering
                 // var input = context.ReadValue<Vector2>();
                 // UpdateLookingState(input);
-                
+
             }
             
             if (context.canceled)
@@ -183,7 +197,7 @@ namespace Player
         public void OnFire(InputAction.CallbackContext context)
         {
             // check fire conditions
-            if (!_state.HasShield && !_state.IsAiming /*&& !context.started*/) return;
+            if ((!_state.HasShield && !_state.IsAiming) || _blockedAim) return;
 
             var selfPos = transform.position;
             var spawnPos = selfPos + new Vector3(1.5f, 0f, 0f);
@@ -300,18 +314,29 @@ namespace Player
 
         private void OnDrawGizmos()
         {
-            if (_leftBufferRayHit) Gizmos.color = Color.blue;
-            else Gizmos.color = Color.red;
-            Gizmos.DrawRay(_leftBufferRay.position, Vector2.down * _minDistanceToBufferJump);
+            // jump buffer gizmo ---------------------------------------------------------------------------------------
+            // if (_leftBufferRayHit) Gizmos.color = Color.blue;
+            // else Gizmos.color = Color.red;
+            // Gizmos.DrawRay(_leftBufferRay.position, Vector2.down * _minDistanceToBufferJump);
+            //
+            // if (_RightBufferRayHit) Gizmos.color = Color.blue;
+            // else Gizmos.color = Color.red;
+            // Gizmos.DrawRay(_rightBufferRay.position, Vector2.down * _minDistanceToBufferJump);
             
-            if (_RightBufferRayHit) Gizmos.color = Color.blue;
-            else Gizmos.color = Color.red;
-            Gizmos.DrawRay(_rightBufferRay.position, Vector2.down * _minDistanceToBufferJump);
-            
+            // is grounded gizmo ---------------------------------------------------------------------------------------
             // Gizmos.color = Color.red;
             // Gizmos.DrawRay(_leftGroundedRay.position, Vector2.down * _groundedDistance);
             // Gizmos.DrawRay(_midGroundedRay.position, Vector2.down * _groundedDistance);
             // Gizmos.DrawRay(_rightGroundedRay.position, Vector2.down * _groundedDistance);
+
+            // Blocked shield gizmo ------------------------------------------------------------------------------------
+            // if (_aimAssist)
+            // {
+            //     Gizmos.color = Color.magenta;
+            //     Vector2 checkPoint = Vector2.right * 1.5f;
+            //     checkPoint = Quaternion.Euler(0, 0, _aimAssist.currentAngle) * checkPoint;
+            //     Gizmos.DrawRay(transform.position, (checkPoint));
+            // }
         }
 
         private bool CheckIsOnGround()
@@ -331,6 +356,36 @@ namespace Player
             if (hit && hit.transform.CompareTag("Ground")) return true;
 
             return false;
+        }
+
+        private bool ShieldThrowBlocked()
+        {
+            bool blocked = false;
+
+            // make a vector that points to the right with a length of 1.5 (the distance away that the shield will spawn)
+            Vector2 checkPoint = Vector2.right * 1.5f;
+            
+            // rotate the vector by the angle set in _aimAssist
+            checkPoint = Quaternion.Euler(0, 0, _aimAssist.currentAngle) * checkPoint;
+
+            // cast a ray starting at the player center out to the point where the shield will spawn
+            // use the spawn distance again, idk if the checkPoint vector needs to be normalized
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, (checkPoint), 1.5F, _shieldBlockableLayers);
+
+            // check if there was a collision
+            if (hit)
+            {
+                // there was, so set the position of the block indicator to the point of the collision
+                _blockedAim = true;
+                _blockIndicatorInstance.transform.position = hit.point;
+            }
+            else
+            {
+                // there wasn't a hit, so our aim isnt blocked
+                _blockedAim = false;
+            }
+
+            return blocked;
         }
     }
 }

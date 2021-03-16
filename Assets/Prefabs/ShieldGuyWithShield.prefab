@@ -355,6 +355,7 @@ MonoBehaviour:
   _midGroundedRay: {fileID: 51442841823933673}
   _rightGroundedRay: {fileID: 676851087145927683}
   grounded: 0
+  IsFacingRight: 1
 --- !u!114 &215217005
 MonoBehaviour:
   m_ObjectHideFlags: 0

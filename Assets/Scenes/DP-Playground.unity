@@ -2649,23 +2649,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 215217004, guid: 37e5e55cf1f3ed44fb6e7635826eba4e, type: 3}
-      propertyPath: _groundCollider2D
-      value: 
-      objectReference: {fileID: 692303537}
-    - target: {fileID: 215217004, guid: 37e5e55cf1f3ed44fb6e7635826eba4e, type: 3}
-      propertyPath: shieldBlockedIndicator
-      value: 
-      objectReference: {fileID: 3404103568632981716, guid: ec48579da7709644991e6327a08e879f,
-        type: 3}
-    - target: {fileID: 215217004, guid: 37e5e55cf1f3ed44fb6e7635826eba4e, type: 3}
-      propertyPath: _shieldBlockableLayers.m_Bits
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 215217005, guid: 37e5e55cf1f3ed44fb6e7635826eba4e, type: 3}
-      propertyPath: maxFallVelocity
-      value: 8
-      objectReference: {fileID: 0}
     - target: {fileID: 1330292069433469250, guid: 37e5e55cf1f3ed44fb6e7635826eba4e,
         type: 3}
       propertyPath: m_Name

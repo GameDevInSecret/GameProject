@@ -63,6 +63,8 @@ namespace Player
         private float _groundedDistance = 0.2F;
         [SerializeField] private bool grounded;
 
+        public bool IsFacingRight = true;
+
         // Start is called before the first frame update
         private void Start()
         {
@@ -86,11 +88,13 @@ namespace Player
             _blockIndicatorInstance.SetActive(false);
 
             _state = new StateController();
-            
+            _state.IsLookingRight = true;
+
         }
 
         private void Update()
         {
+            IsFacingRight = _state.IsLookingRight;
             _state.IsGrounded = CheckIsOnGround();
             grounded = _state.IsGrounded;
             
@@ -197,23 +201,50 @@ namespace Player
         public void OnFire(InputAction.CallbackContext context)
         {
             // check fire conditions
-            if ((!_state.HasShield && !_state.IsAiming) || _blockedAim) return;
+            // if ((!_state.HasShield && !_state.IsAiming) || _blockedAim) return;
+            if (!context.started) return;
 
-            var selfPos = transform.position;
-            var spawnPos = selfPos + new Vector3(1.5f, 0f, 0f);
+            if (_state.HasShield && _state.IsAiming && !_blockedAim)
+            {
+                // aimed throw
+                var selfPos = transform.position;
+                var spawnPos = selfPos + new Vector3(1.5f, 0f, 0f);
 
-            // instantiate shield
-            var shieldInstance = Instantiate(shield, spawnPos, _aimAssist.transform.rotation);
-            shieldInstance.transform.RotateAround(selfPos, Vector3.forward, _aimAssist.currentAngle);
-            
-            // throw shield
-            var shieldController = shieldInstance.GetComponent<ShieldController>();
-            shieldController.SetForceDirection(shieldInstance.transform.position - selfPos);
-            shieldController.ThrowShield();
+                // instantiate shield
+                var shieldInstance = Instantiate(shield, spawnPos, _aimAssist.transform.rotation);
+                shieldInstance.transform.RotateAround(selfPos, Vector3.forward, _aimAssist.currentAngle);
 
-            // set states and active sprites
-            _state.HasShield = false;
-            _state.IsAiming = false;
+                // throw shield
+                var shieldController = shieldInstance.GetComponent<ShieldController>();
+                shieldController.SetForceDirection(shieldInstance.transform.position - selfPos);
+                shieldController.ThrowShield();
+
+                // set states and active sprites
+                _state.HasShield = false;
+                _state.IsAiming = false;
+            } 
+            else if (_state.HasShield && !_state.IsAiming)
+            {
+                // quick throw
+                
+                if (_state.IsLookingRight && PointBlocked(Vector2.right, 1.5F)) return;
+                else if (!_state.IsLookingRight && PointBlocked(Vector2.left, 1.5F)) return;
+                
+                var selfPos = transform.position;
+                Vector3 spawnPos;
+                
+                if (_state.IsLookingRight) spawnPos = selfPos + new Vector3(1.5f, 0f, 0f);
+                else spawnPos = selfPos - new Vector3(1.5f, 0f, 0f);
+                
+                var shieldInstance = Instantiate(shield, spawnPos, shield.transform.rotation);
+                // shieldInstance.transform.RotateAround(selfPos, Vector3.forward, _aimAssist.currentAngle);
+                
+                var shieldController = shieldInstance.GetComponent<ShieldController>();
+                shieldController.SetForceDirection(shieldInstance.transform.position - selfPos);
+                shieldController.ThrowShield();
+                
+                _state.HasShield = false;
+            }
         }
 
         private void UpdateSprite()
@@ -370,7 +401,8 @@ namespace Player
 
             // cast a ray starting at the player center out to the point where the shield will spawn
             // use the spawn distance again, idk if the checkPoint vector needs to be normalized
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, (checkPoint), 1.5F, _shieldBlockableLayers);
+            RaycastHit2D hit = PointBlocked(checkPoint, 1.5F);
+            // RaycastHit2D hit = Physics2D.Raycast(transform.position, (checkPoint), 1.5F, _shieldBlockableLayers);
 
             // check if there was a collision
             if (hit)
@@ -386,6 +418,11 @@ namespace Player
             }
 
             return blocked;
+        }
+
+        private RaycastHit2D PointBlocked(Vector2 point, float dis)
+        {
+            return Physics2D.Raycast(transform.position, (point), dis, _shieldBlockableLayers);
         }
     }
 }
